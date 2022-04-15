@@ -12,6 +12,10 @@ updates:
       time: '12:00'
       timezone: 'Europe/Moscow'
     ignore:
+      - dependency-name: 'vue'
+        versions: ['>=3.0.0']
+      - dependency-name: '@vue/cli-*'
+        versions: ['>=5.0.0']
       - dependency-name: 'eslint'
         versions: ['>=7.0.0']
       - dependency-name: 'sass-loader'
