@@ -1,14 +1,10 @@
-# vue-ganttastic
+# Vue-Ganttastic
 
 ![screenshot](https://user-images.githubusercontent.com/4740535/143231164-88cd538f-f4ff-4fc6-8cb0-a25f4bab465c.png)
 
 A simple and easy-to-use Gantt chart component for Vue.js
 
-## Homepage
-
-[Homepage of the project](https://infectoone.github.io/vue-ganttastic-homepage/#/docs)
-
-[DEMO](https://tenrok.github.io/vue-ganttastic/)
+[Demo](http://vue-ganttastic.vercel.app/)
 
 ## Installation
 
