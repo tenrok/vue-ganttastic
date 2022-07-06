@@ -46,7 +46,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.7.2"
+    "vue": "^2.7.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.19",
@@ -57,7 +57,7 @@
     "eslint-plugin-vue": "^9.2.0",
     "sass": "^1.53.0",
     "sass-loader": "^10.3.0",
-    "vue-template-compiler": "^2.7.2"
+    "vue-template-compiler": "^2.7.3"
   },
   "peerDependencies": {
     "moment": "^2.26.0"
