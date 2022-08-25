@@ -12,10 +12,7 @@
   box-sizing: border-box;
   background: $background;
   flex: 1;
-
-  & >>> * {
-    font-family: Roboto, Verdana;
-  }
+  font-family: Roboto, Verdana;
 }
 
 .g-gantt-timeaxis,
