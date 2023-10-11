@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="g-timeaxis"
-    class="g-gantt-timeaxis"
-    :style="{ width: `${timeCount * gridSize + rowLabelWidth}px` }"
-  >
+  <div ref="g-timeaxis" class="g-gantt-timeaxis" :style="{ width: `${timeCount * gridSize + rowLabelWidth}px` }">
     <div
       class="g-gantt-timeaxis__empty-space"
       :style="{
@@ -11,11 +7,7 @@
       }"
     />
     <div class="g-gantt-timeaxis__days">
-      <div
-        v-for="point in axisPoints"
-        :key="point.text"
-        class="g-gantt-timeaxis__day"
-      >
+      <div v-for="point in axisPoints" :key="point.text" class="g-gantt-timeaxis__day">
         <div v-html="pointFormatted(point) || '&nbsp;'"></div>
         <div class="g-gantt-timeaxis__hours">
           <div
@@ -24,9 +16,7 @@
             class="g-gantt-timeaxis__hour"
             :style="{ width: `${gridSize}px` }"
           >
-            <span :style="{ fontSize: hourFontSize }">{{
-              childPoint.text
-            }}</span>
+            <span :style="{ fontSize: hourFontSize }">{{ childPoint.text }}</span>
             <div class="g-gantt-timeaxis__hour-pin" />
           </div>
         </div>
@@ -93,9 +83,7 @@ export default {
 
   methods: {
     initAxis() {
-      this.precision === 'day'
-        ? this.initAxisDaysAndHours()
-        : this.initAxisMonthsAndDays()
+      this.precision === 'day' ? this.initAxisDaysAndHours() : this.initAxisMonthsAndDays()
     },
 
     initAxisMonthsAndDays() {
@@ -103,16 +91,10 @@ export default {
       let end = moment(this.chartEnd)
       this.axisPoints = []
       while (start.isBefore(end)) {
-        let dayCountOfMonth = start.isSame(end, 'month')
-          ? end.date() - 1
-          : start.daysInMonth() - start.date() + 1
+        let dayCountOfMonth = start.isSame(end, 'month') ? end.date() - 1 : start.daysInMonth() - start.date() + 1
         let widthPercentage = (dayCountOfMonth / this.timeCount) * 100
-        let endDay = start.isSame(end, 'month')
-          ? end.date() - 1
-          : start.daysInMonth()
-        this.axisPoints.push(
-          this.getAxisMonthObject(start, widthPercentage, endDay)
-        )
+        let endDay = start.isSame(end, 'month') ? end.date() - 1 : start.daysInMonth()
+        this.axisPoints.push(this.getAxisMonthObject(start, widthPercentage, endDay))
         start.add(1, 'month').date(1).hour(0)
       }
     },
@@ -122,14 +104,10 @@ export default {
       let end = moment(this.chartEnd)
       this.axisPoints = []
       while (start.isBefore(end)) {
-        let hourCountOfDay = start.isSame(end, 'day')
-          ? end.hour()
-          : 24 - start.hour()
+        let hourCountOfDay = start.isSame(end, 'day') ? end.hour() : 24 - start.hour()
         let widthPercentage = (hourCountOfDay / this.timeCount) * 100
         let endHour = start.isSame(end, 'day') ? end.hour() - 1 : 23 // -1 because the last hour is not included e.g if chartEnd=04:00 the last interval we display is between 03 and 04
-        this.axisPoints.push(
-          this.getAxisDayObject(start, widthPercentage, endHour)
-        )
+        this.axisPoints.push(this.getAxisDayObject(start, widthPercentage, endHour))
         start.add(1, 'day').hour(0)
       }
     },
@@ -175,25 +153,15 @@ export default {
     moveTimemarker(event) {
       const chart = this.timemarker.closest('.g-gantt-chart')
       if (!chart) return
-      let pos =
-        chart.scrollLeft +
-        event.clientX -
-        this.timemarkerOffset -
-        this.horizontalAxisContainer.left
-      if (pos > this.horizontalAxisContainer.width)
-        pos = this.horizontalAxisContainer.width
+      let pos = chart.scrollLeft + event.clientX - this.timemarkerOffset - this.horizontalAxisContainer.left
+      if (pos > this.horizontalAxisContainer.width) pos = this.horizontalAxisContainer.width
       this.timemarker.style.left = `${pos}px`
     },
 
     onWindowResize() {
       if (!this.$refs['g-timeaxis']) return
-      this.horizontalAxisContainer =
-        this.$refs['g-timeaxis'].getBoundingClientRect()
-      this.hourFontSize =
-        Math.min(
-          9.5,
-          0.75 * (this.horizontalAxisContainer.width / this.timeCount)
-        ) + 'px'
+      this.horizontalAxisContainer = this.$refs['g-timeaxis'].getBoundingClientRect()
+      this.hourFontSize = Math.min(9.5, 0.75 * (this.horizontalAxisContainer.width / this.timeCount)) + 'px'
     },
 
     pointFormatted(point) {

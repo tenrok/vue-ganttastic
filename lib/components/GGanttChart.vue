@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="g-gantt-chart-container"
-    :data-theme="theme"
-    :style="{ width, height }"
-  >
+  <div class="g-gantt-chart-container" :data-theme="theme" :style="{ width, height }">
     <div class="g-gantt-chart">
       <g-gantt-timeaxis
         v-if="!hideTimeaxis"
@@ -20,10 +16,7 @@
         :month-format="monthFormat"
       />
 
-      <div
-        class="g-gantt-rows-container"
-        :style="{ width: `${timeCount * gridSize + rowLabelWidth}px` }"
-      >
+      <div class="g-gantt-rows-container" :style="{ width: `${timeCount * gridSize + rowLabelWidth}px` }">
         <g-gantt-grid
           v-if="grid"
           :chart-start="chartStart"
@@ -107,22 +100,16 @@ export default {
     timeCount() {
       let momentChartStart = moment(this.chartStart)
       let momentChartEnd = moment(this.chartEnd)
-      return Math.floor(
-        momentChartEnd.diff(momentChartStart, this.timeUnit, true)
-      )
+      return Math.floor(momentChartEnd.diff(momentChartStart, this.timeUnit, true))
     }
   },
 
   methods: {
     getGanttBarChildrenList() {
       let ganttBarChildren = []
-      let ganttRowChildrenList = this.$children.filter(
-        childComp => childComp.$options.name === GGanttRow.name
-      )
+      let ganttRowChildrenList = this.$children.filter(childComp => childComp.$options.name === GGanttRow.name)
       ganttRowChildrenList.forEach(row => {
-        let ganttBarChildrenOfRow = row.$children.filter(
-          childComp => childComp.$options.name === GGanttBar.name
-        )
+        let ganttBarChildrenOfRow = row.$children.filter(childComp => childComp.$options.name === GGanttBar.name)
         ganttBarChildren.push(...ganttBarChildrenOfRow)
       })
       return ganttBarChildren
@@ -132,23 +119,15 @@ export default {
       if (bundleId === undefined || bundleId === null) {
         return []
       }
-      return this.getGanttBarChildrenList().filter(
-        ganttBarChild => ganttBarChild.barConfig.bundle === bundleId
-      )
+      return this.getGanttBarChildrenList().filter(ganttBarChild => ganttBarChild.barConfig.bundle === bundleId)
     },
 
     initDragOfBarsFromBundle(gGanttBar, e) {
       gGanttBar.initDrag(e)
       this.movedBarsInDrag.add(gGanttBar.bar)
-      if (
-        gGanttBar.barConfig.bundle !== null &&
-        gGanttBar.barConfig.bundle !== undefined
-      ) {
+      if (gGanttBar.barConfig.bundle !== null && gGanttBar.barConfig.bundle !== undefined) {
         this.getGanttBarChildrenList().forEach(ganttBarChild => {
-          if (
-            ganttBarChild.barConfig.bundle === gGanttBar.barConfig.bundle &&
-            ganttBarChild !== gGanttBar
-          ) {
+          if (ganttBarChild.barConfig.bundle === gGanttBar.barConfig.bundle && ganttBarChild !== gGanttBar) {
             ganttBarChild.initDrag(e)
             this.movedBarsInDrag.add(ganttBarChild.bar)
           }
@@ -158,17 +137,12 @@ export default {
 
     moveBarsFromBundleOfPushedBar(pushedBar, minuteDiff, overlapType) {
       this.movedBarsInDrag.add(pushedBar)
-      let bundleId = pushedBar[this.barConfigKey]
-        ? pushedBar[this.barConfigKey].bundle
-        : null
+      let bundleId = pushedBar[this.barConfigKey] ? pushedBar[this.barConfigKey].bundle : null
       if (bundleId === undefined || bundleId === null) {
         return
       }
       this.getGanttBarChildrenList().forEach(ganttBarChild => {
-        if (
-          ganttBarChild.barConfig.bundle === bundleId &&
-          ganttBarChild.bar !== pushedBar
-        ) {
+        if (ganttBarChild.barConfig.bundle === bundleId && ganttBarChild.bar !== pushedBar) {
           ganttBarChild.moveBarByChildPointsAndPush(minuteDiff, overlapType)
           this.movedBarsInDrag.add(ganttBarChild.bar)
         }
@@ -176,10 +150,7 @@ export default {
     },
 
     shouldSnapBackBar(ganttBar) {
-      if (
-        this.snapBackOnOverlap &&
-        ganttBar.barConfig.pushOnOverlap !== false
-      ) {
+      if (this.snapBackOnOverlap && ganttBar.barConfig.pushOnOverlap !== false) {
         let { overlapBar } = ganttBar.getOverlapBarAndType(ganttBar.bar)
         return !!overlapBar
       }
@@ -188,10 +159,7 @@ export default {
 
     snapBackBundleIfNeeded(ganttBar) {
       let barsFromBundle = this.getBarsFromBundle(ganttBar.barConfig.bundle)
-      if (
-        this.shouldSnapBackBar(ganttBar) ||
-        barsFromBundle.some(gBar => this.shouldSnapBackBar(gBar))
-      ) {
+      if (this.shouldSnapBackBar(ganttBar) || barsFromBundle.some(gBar => this.shouldSnapBackBar(gBar))) {
         ganttBar.snapBack()
         barsFromBundle.forEach(gBar => gBar.snapBack())
         return true
@@ -214,77 +182,45 @@ export default {
           if (this.precision === 'month') {
             if (left && bar == ganttBar.bar) {
               if (moment(bar[this.barStartKey]).hours() < 12) {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .hours(0)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).hours(0).format()
               } else {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .hours(24)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).hours(24).format()
               }
             } else if (right && bar == ganttBar.bar) {
               if (moment(bar[this.barEndKey]).hours() < 12) {
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .hours(0)
-                  .format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).hours(0).format()
               } else {
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .hours(24)
-                  .format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).hours(24).format()
               }
             } else {
               if (moment(bar[this.barStartKey]).hours() < 12) {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .hours(0)
-                  .format()
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .hours(0)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).hours(0).format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).hours(0).format()
               } else {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .hours(24)
-                  .format()
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .hours(24)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).hours(24).format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).hours(24).format()
               }
             }
           } else {
             if (left && bar == ganttBar.bar) {
               if (moment(bar[this.barStartKey]).minutes() < 30) {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .minutes(0)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).minutes(0).format()
               } else {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .minutes(60)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).minutes(60).format()
               }
             } else if (right && bar == ganttBar.bar) {
               if (moment(bar[this.barEndKey]).minutes() < 30) {
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .minutes(0)
-                  .format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).minutes(0).format()
               } else {
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .minutes(60)
-                  .format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).minutes(60).format()
               }
             } else {
               if (moment(bar[this.barStartKey]).minutes() < 30) {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .minutes(0)
-                  .format()
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .minutes(0)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).minutes(0).format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).minutes(0).format()
               } else {
-                bar[this.barStartKey] = moment(bar[this.barStartKey])
-                  .minutes(60)
-                  .format()
-                bar[this.barEndKey] = moment(bar[this.barEndKey])
-                  .minutes(60)
-                  .format()
+                bar[this.barStartKey] = moment(bar[this.barStartKey]).minutes(60).format()
+                bar[this.barEndKey] = moment(bar[this.barEndKey]).minutes(60).format()
               }
             }
           }
@@ -306,29 +242,20 @@ export default {
         return
       }
       for (let side of ['left', 'right']) {
-        let [totalGapDistance, bundleBarsOnPath] =
-          this.countGapDistanceToNextImmobileBar(bar, null, side, false)
+        let [totalGapDistance, bundleBarsOnPath] = this.countGapDistanceToNextImmobileBar(bar, null, side, false)
         for (let i = 0; i < bundleBarsOnPath.length; i++) {
           let barFromBundle = bundleBarsOnPath[i].bar
           let gapDist = bundleBarsOnPath[i].gapDistance
-          let otherBarsFromBundle = this.getBarsFromBundle(
-            barFromBundle.barConfig.bundle
-          ).filter(otherBar => otherBar !== barFromBundle)
+          let otherBarsFromBundle = this.getBarsFromBundle(barFromBundle.barConfig.bundle).filter(
+            otherBar => otherBar !== barFromBundle
+          )
           otherBarsFromBundle.forEach(otherBar => {
-            let [newGapDistance, newBundleBars] =
-              this.countGapDistanceToNextImmobileBar(otherBar, gapDist, side)
-            if (
-              newGapDistance !== null &&
-              (newGapDistance < totalGapDistance || !totalGapDistance)
-            ) {
+            let [newGapDistance, newBundleBars] = this.countGapDistanceToNextImmobileBar(otherBar, gapDist, side)
+            if (newGapDistance !== null && (newGapDistance < totalGapDistance || !totalGapDistance)) {
               totalGapDistance = newGapDistance
             }
             newBundleBars.forEach(newBundleBar => {
-              if (
-                !bundleBarsOnPath.find(
-                  barAndGap => barAndGap.bar === newBundleBar.bar
-                )
-              ) {
+              if (!bundleBarsOnPath.find(barAndGap => barAndGap.bar === newBundleBar.bar)) {
                 bundleBarsOnPath.push(newBundleBar)
               }
             })
@@ -337,16 +264,11 @@ export default {
         if (totalGapDistance != null && side === 'left') {
           bar.dragLimitLeft = bar.$refs['g-bar'].offsetLeft - totalGapDistance
         } else if (totalGapDistance != null && side === 'right') {
-          bar.dragLimitRight =
-            bar.$refs['g-bar'].offsetLeft +
-            bar.$refs['g-bar'].offsetWidth +
-            totalGapDistance
+          bar.dragLimitRight = bar.$refs['g-bar'].offsetLeft + bar.$refs['g-bar'].offsetWidth + totalGapDistance
         }
       }
       // all bars from the bundle of the clicked bar need to have the same drag limit:
-      let barsFromBundleOfClickedBar = this.getBarsFromBundle(
-        bar.barConfig.bundle
-      )
+      let barsFromBundleOfClickedBar = this.getBarsFromBundle(bar.barConfig.bundle)
       barsFromBundleOfClickedBar.forEach(barFromBundle => {
         barFromBundle.dragLimitLeft = bar.dragLimitLeft
         barFromBundle.dragLimitRight = bar.dragLimitRight
@@ -356,29 +278,16 @@ export default {
     // returns the gap distance to the next immobile bar
     // in the row where the given bar (parameter) is (added to gapDistanceSoFar)
     // and a list of all bars on that path that belong to a bundle
-    countGapDistanceToNextImmobileBar(
-      bar,
-      gapDistanceSoFar,
-      side = 'left',
-      ignoreShadows = true
-    ) {
-      let bundleBarsAndGapDist = bar.barConfig.bundle
-        ? [{ bar, gapDistance: gapDistanceSoFar }]
-        : []
+    countGapDistanceToNextImmobileBar(bar, gapDistanceSoFar, side = 'left', ignoreShadows = true) {
+      let bundleBarsAndGapDist = bar.barConfig.bundle ? [{ bar, gapDistance: gapDistanceSoFar }] : []
       let currentBar = bar
       let nextBar = this.getNextGanttBar(currentBar, side)
       // left side:
       if (side === 'left') {
         while (nextBar) {
-          let nextBarOffsetRight =
-            nextBar.$refs['g-bar'].offsetLeft +
-            nextBar.$refs['g-bar'].offsetWidth
-          gapDistanceSoFar +=
-            currentBar.$refs['g-bar'].offsetLeft - nextBarOffsetRight
-          if (
-            nextBar.barConfig.immobile ||
-            (nextBar.barConfig.isShadow && !ignoreShadows)
-          ) {
+          let nextBarOffsetRight = nextBar.$refs['g-bar'].offsetLeft + nextBar.$refs['g-bar'].offsetWidth
+          gapDistanceSoFar += currentBar.$refs['g-bar'].offsetLeft - nextBarOffsetRight
+          if (nextBar.barConfig.immobile || (nextBar.barConfig.isShadow && !ignoreShadows)) {
             return [gapDistanceSoFar, bundleBarsAndGapDist]
           } else if (nextBar.barConfig.bundle) {
             bundleBarsAndGapDist.push({
@@ -392,15 +301,9 @@ export default {
       }
       if (side === 'right') {
         while (nextBar) {
-          let currentBarOffsetRight =
-            currentBar.$refs['g-bar'].offsetLeft +
-            currentBar.$refs['g-bar'].offsetWidth
-          gapDistanceSoFar +=
-            nextBar.$refs['g-bar'].offsetLeft - currentBarOffsetRight
-          if (
-            nextBar.barConfig.immobile ||
-            (nextBar.barConfig.isShadow && !ignoreShadows)
-          ) {
+          let currentBarOffsetRight = currentBar.$refs['g-bar'].offsetLeft + currentBar.$refs['g-bar'].offsetWidth
+          gapDistanceSoFar += nextBar.$refs['g-bar'].offsetLeft - currentBarOffsetRight
+          if (nextBar.barConfig.immobile || (nextBar.barConfig.isShadow && !ignoreShadows)) {
             return [gapDistanceSoFar, bundleBarsAndGapDist]
           } else if (nextBar.barConfig.bundle) {
             bundleBarsAndGapDist.push({
@@ -440,12 +343,8 @@ export default {
       }
       if (allBarsLeftOrRight.length > 0) {
         return allBarsLeftOrRight.reduce((bar1, bar2) => {
-          let bar1Dist = Math.abs(
-            bar1.$refs['g-bar'].offsetLeft - bar.$refs['g-bar'].offsetLeft
-          )
-          let bar2Dist = Math.abs(
-            bar2.$refs['g-bar'].offsetLeft - bar.$refs['g-bar'].offsetLeft
-          )
+          let bar1Dist = Math.abs(bar1.$refs['g-bar'].offsetLeft - bar.$refs['g-bar'].offsetLeft)
+          let bar2Dist = Math.abs(bar2.$refs['g-bar'].offsetLeft - bar.$refs['g-bar'].offsetLeft)
           return bar1Dist < bar2Dist ? bar1 : bar2
         }, allBarsLeftOrRight[0])
       } else {
@@ -464,15 +363,12 @@ export default {
     return {
       getTimeCount: () => this.timeCount,
       getChartProps: () => this.$props,
-      initDragOfBarsFromBundle: (bundleId, e) =>
-        this.initDragOfBarsFromBundle(bundleId, e),
+      initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e),
       moveBarsFromBundleOfPushedBar: (bar, minuteDiff, overlapType) =>
         this.moveBarsFromBundleOfPushedBar(bar, minuteDiff, overlapType),
-      setDragLimitsOfGanttBar: ganttBar =>
-        this.setDragLimitsOfGanttBar(ganttBar),
+      setDragLimitsOfGanttBar: ganttBar => this.setDragLimitsOfGanttBar(ganttBar),
       onBarEvent: (e, ganttBar) => this.onBarEvent(e, ganttBar),
-      onDragendBar: (e, ganttBar, action) =>
-        this.onDragendBar(e, ganttBar, action),
+      onDragendBar: (e, ganttBar, action) => this.onDragendBar(e, ganttBar, action),
       getTimeUnit: () => this.timeUnit,
       getTimeFormat: () => this.timeFormat
     }

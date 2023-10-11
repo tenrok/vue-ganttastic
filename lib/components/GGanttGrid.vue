@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="g-gantt-grid"
-    :style="{ left: `${rowLabelWidth}px`, width: `${timeCount * gridSize}px` }"
-  >
+  <div class="g-gantt-grid" :style="{ left: `${rowLabelWidth}px`, width: `${timeCount * gridSize}px` }">
     <div
       v-for="(childPoint, index) in allChildPoints"
       :key="index"
@@ -58,16 +55,10 @@ export default {
     isHighlighted(point) {
       switch (this.precision) {
         case 'day':
-          if (
-            this.highlightedDays.includes(
-              moment(point, 'YYYY-MM-DD').format('YYYY-MM-DD')
-            )
-          ) {
+          if (this.highlightedDays.includes(moment(point, 'YYYY-MM-DD').format('YYYY-MM-DD'))) {
             return true
           } else {
-            return this.highlightedHours.includes(
-              moment(point, 'YYYY-MM-DD H').get('hour')
-            )
+            return this.highlightedHours.includes(moment(point, 'YYYY-MM-DD H').get('hour'))
           }
         case 'month':
           return this.highlightedDays.includes(point)

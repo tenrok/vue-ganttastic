@@ -35,8 +35,7 @@
         <div
           class="color-indicator"
           :style="{
-            background:
-              this.barStyle.background || this.barStyle.backgroundColor
+            background: this.barStyle.background || this.barStyle.backgroundColor
           }"
         />
         <div>
@@ -59,10 +58,7 @@ String.prototype.formatUnicorn =
     if (arguments.length) {
       const notSeenInNature = '#$%#$%' // or whatever
       const t = typeof arguments[0]
-      let args =
-        'string' === t || 'number' === t
-          ? Array.prototype.slice.call(arguments)
-          : arguments[0]
+      let args = 'string' === t || 'number' === t ? Array.prototype.slice.call(arguments) : arguments[0]
       for (let key in args) {
         let rv = String(args[key]).replace('{', notSeenInNature)
         str = str.replace(new RegExp('\\{' + key + '\\}', 'gi'), rv)
@@ -123,9 +119,7 @@ export default {
     },
 
     timeChildFormat() {
-      return this.chartProps.precision === 'month'
-        ? 'DD.MM.YYYY'
-        : 'DD.MM.YYYY HH:mm'
+      return this.chartProps.precision === 'month' ? 'DD.MM.YYYY' : 'DD.MM.YYYY HH:mm'
     },
 
     barConfigKey() {
@@ -184,12 +178,8 @@ export default {
     },
 
     barDurationText() {
-      const duration = moment.duration(
-        this.barEndMoment.diff(this.barStartMoment)
-      )
-      return `${Math.floor(duration.as('d'))} ${moment
-        .utc(duration.as('ms'))
-        .format('HH:mm')}`
+      const duration = moment.duration(this.barEndMoment.diff(this.barStartMoment))
+      return `${Math.floor(duration.as('d'))} ${moment.utc(duration.as('ms')).format('HH:mm')}`
     },
 
     barConfig() {
@@ -198,11 +188,8 @@ export default {
           ...this.localBar[this.barConfigKey],
           background: this.localBar[this.barConfigKey].isShadow
             ? 'grey'
-            : this.localBar[this.barConfigKey].background ||
-              this.localBar[this.barConfigKey].backgroundColor,
-          opacity: this.localBar[this.barConfigKey].isShadow
-            ? '0.3'
-            : this.localBar[this.barConfigKey].opacity
+            : this.localBar[this.barConfigKey].background || this.localBar[this.barConfigKey].backgroundColor,
+          opacity: this.localBar[this.barConfigKey].isShadow ? '0.3' : this.localBar[this.barConfigKey].opacity
         }
       }
       return {}
@@ -268,23 +255,17 @@ export default {
     },
 
     onContextmenu(e) {
-      const time = this.mapPositionToTime(
-        e.clientX - this.barContainer.left
-      ).format(this.timeFormat)
+      const time = this.mapPositionToTime(e.clientX - this.barContainer.left).format(this.timeFormat)
       this.onBarEvent({ event: e, type: e.type, time }, this)
     },
 
     onClick(e) {
-      const time = this.mapPositionToTime(
-        e.clientX - this.barContainer.left
-      ).format(this.timeFormat)
+      const time = this.mapPositionToTime(e.clientX - this.barContainer.left).format(this.timeFormat)
       this.onBarEvent({ event: e, type: e.type, time }, this)
     },
 
     onDblclick(e) {
-      const time = this.mapPositionToTime(
-        e.clientX - this.barContainer.left
-      ).format(this.timeFormat)
+      const time = this.mapPositionToTime(e.clientX - this.barContainer.left).format(this.timeFormat)
       this.onBarEvent({ event: e, type: e.type, time }, this)
     },
 
@@ -301,15 +282,11 @@ export default {
           once: true
         })
         // if next mousemove happens after mouse up (if user just presses mouse button down, then up, without moving):
-        window.addEventListener(
-          'mouseup',
-          () => window.removeEventListener('mousemove', this.onFirstMousemove),
-          { once: true }
-        )
+        window.addEventListener('mouseup', () => window.removeEventListener('mousemove', this.onFirstMousemove), {
+          once: true
+        })
       }
-      const time = this.mapPositionToTime(
-        e.clientX - this.barContainer.left
-      ).format(this.timeFormat)
+      const time = this.mapPositionToTime(e.clientX - this.barContainer.left).format(this.timeFormat)
       this.onBarEvent({ event: e, type: e.type, time }, this)
     },
 
@@ -358,11 +335,7 @@ export default {
       const chart = e.target.closest('.g-gantt-chart')
       if (!chart) return
       let barWidth = this.$refs['g-bar'].getBoundingClientRect().width
-      let newXStart =
-        chart.scrollLeft +
-        e.clientX -
-        this.barContainer.left -
-        this.cursorOffsetX
+      let newXStart = chart.scrollLeft + e.clientX - this.barContainer.left - this.cursorOffsetX
       let newXEnd = newXStart + barWidth
       if (this.isPosOutOfDragRange(newXStart, newXEnd)) {
         return
@@ -378,10 +351,7 @@ export default {
       if (!chart) return
       let newXStart = chart.scrollLeft + e.clientX - this.barContainer.left
       let newStartMoment = this.mapPositionToTime(newXStart)
-      if (
-        this.barEndMoment.diff(newStartMoment, this.timeUnit) < 1 ||
-        this.isPosOutOfDragRange(newXStart, null)
-      ) {
+      if (this.barEndMoment.diff(newStartMoment, this.timeUnit) < 1 || this.isPosOutOfDragRange(newXStart, null)) {
         return
       }
       this.barStartMoment = newStartMoment
@@ -393,10 +363,7 @@ export default {
       if (!chart) return
       let newXEnd = chart.scrollLeft + e.clientX - this.barContainer.left
       let newEndMoment = this.mapPositionToTime(newXEnd)
-      if (
-        newEndMoment.isSameOrBefore(this.barStartMoment, this.timeUnit) ||
-        this.isPosOutOfDragRange(null, newXEnd)
-      ) {
+      if (newEndMoment.isSameOrBefore(this.barStartMoment, this.timeUnit) || this.isPosOutOfDragRange(null, newXEnd)) {
         return
       }
       this.barEndMoment = newEndMoment
@@ -410,18 +377,10 @@ export default {
       if (newXEnd > this.barContainer.width) {
         return true
       }
-      if (
-        newXStart &&
-        this.dragLimitLeft !== null &&
-        newXStart < this.dragLimitLeft + this.minGapBetweenBars
-      ) {
+      if (newXStart && this.dragLimitLeft !== null && newXStart < this.dragLimitLeft + this.minGapBetweenBars) {
         return true
       }
-      if (
-        newXEnd &&
-        this.dragLimitRight !== null &&
-        newXEnd > this.dragLimitRight - this.minGapBetweenBars
-      ) {
+      if (newXEnd && this.dragLimitRight !== null && newXEnd > this.dragLimitRight - this.minGapBetweenBars) {
         return true
       }
 
@@ -434,25 +393,14 @@ export default {
       //   return true
       // }
 
-      if (
-        !this.chartProps.pushOnOverlap ||
-        this.barConfig.pushOnOverlap === false
-      ) {
+      if (!this.chartProps.pushOnOverlap || this.barConfig.pushOnOverlap === false) {
         return false
       }
 
-      const isSqueezeToLeft =
-        newXStart &&
-        moment(this.localBar[this.barStartKey]).isBefore(
-          this.barStartBeforeDrag
-        )
-      const isSqueezeToRight =
-        newXEnd &&
-        moment(this.localBar[this.barEndKey]).isAfter(this.barEndBeforeDrag)
+      const isSqueezeToLeft = newXStart && moment(this.localBar[this.barStartKey]).isBefore(this.barStartBeforeDrag)
+      const isSqueezeToRight = newXEnd && moment(this.localBar[this.barEndKey]).isAfter(this.barEndBeforeDrag)
 
-      const currentIndex = this.allBarsInRow.findIndex(
-        bar => bar == this.localBar
-      )
+      const currentIndex = this.allBarsInRow.findIndex(bar => bar == this.localBar)
 
       let otherBars = []
       if (isSqueezeToRight) {
@@ -514,10 +462,7 @@ export default {
     },
 
     manageOverlapping() {
-      if (
-        !this.chartProps.pushOnOverlap ||
-        this.barConfig.pushOnOverlap === false
-      ) {
+      if (!this.chartProps.pushOnOverlap || this.barConfig.pushOnOverlap === false) {
         return
       }
       let currentBar = this.localBar
@@ -530,12 +475,7 @@ export default {
         let overlapEndMoment = moment(overlapBar[this.barEndKey])
         switch (overlapType) {
           case 'left':
-            minuteDiff =
-              overlapEndMoment.diff(
-                currentStartMoment,
-                this.timeChildKey,
-                true
-              ) + this.minGapBetweenBars
+            minuteDiff = overlapEndMoment.diff(currentStartMoment, this.timeChildKey, true) + this.minGapBetweenBars
             overlapBar[this.barEndKey] = currentStartMoment
               .subtract(this.minGapBetweenBars, this.timeChildKey, true)
               .format(this.timeFormat)
@@ -544,12 +484,7 @@ export default {
               .format(this.timeFormat)
             break
           case 'right':
-            minuteDiff =
-              currentEndMoment.diff(
-                overlapStartMoment,
-                this.timeChildKey,
-                true
-              ) + this.minGapBetweenBars
+            minuteDiff = currentEndMoment.diff(overlapStartMoment, this.timeChildKey, true) + this.minGapBetweenBars
             overlapBar[this.barStartKey] = currentEndMoment
               .add(this.minGapBetweenBars, this.timeChildKey, true)
               .format(this.timeFormat)
@@ -559,9 +494,7 @@ export default {
             break
           default:
             // eslint-disable-next-line
-            console.warn(
-              'One bar is inside of the other one! This should never occur while push-on-overlap is active!'
-            )
+            console.warn('One bar is inside of the other one! This should never occur while push-on-overlap is active!')
             return
         }
         this.moveBarsFromBundleOfPushedBar(overlapBar, minuteDiff, overlapType)
@@ -575,36 +508,20 @@ export default {
       let barEndMoment = moment(bar[this.barEndKey])
       let overlapLeft, overlapRight, overlapInBetween
       let overlapBar = this.allBarsInRow.find(otherBar => {
-        if (
-          otherBar === bar ||
-          (otherBar[this.barConfigKey] &&
-            otherBar[this.barConfigKey].pushOnOverlap === false)
-        ) {
+        if (otherBar === bar || (otherBar[this.barConfigKey] && otherBar[this.barConfigKey].pushOnOverlap === false)) {
           return false
         }
         let otherBarStartMoment = moment(otherBar[this.barStartKey])
         let otherBarEndMoment = moment(otherBar[this.barEndKey])
 
-        overlapLeft = barStartMoment.isBetween(
-          otherBarStartMoment,
-          otherBarEndMoment
-        )
-        overlapRight = barEndMoment.isBetween(
-          otherBarStartMoment,
-          otherBarEndMoment
-        )
+        overlapLeft = barStartMoment.isBetween(otherBarStartMoment, otherBarEndMoment)
+        overlapRight = barEndMoment.isBetween(otherBarStartMoment, otherBarEndMoment)
         overlapInBetween =
           otherBarStartMoment.isBetween(barStartMoment, barEndMoment) ||
           otherBarEndMoment.isBetween(barStartMoment, barEndMoment)
         return overlapLeft || overlapRight || overlapInBetween
       })
-      let overlapType = overlapLeft
-        ? 'left'
-        : overlapRight
-        ? 'right'
-        : overlapInBetween
-        ? 'between'
-        : null
+      let overlapType = overlapLeft ? 'left' : overlapRight ? 'right' : overlapInBetween ? 'between' : null
       return { overlapBar, overlapType }
     },
 
@@ -613,28 +530,12 @@ export default {
     moveBarByChildPointsAndPush(childPointCount, direction) {
       switch (direction) {
         case 'left':
-          this.barStartMoment = moment(this.barStartMoment).subtract(
-            childPointCount,
-            this.timeChildKey,
-            true
-          )
-          this.barEndMoment = moment(this.barEndMoment).subtract(
-            childPointCount,
-            this.timeChildKey,
-            true
-          )
+          this.barStartMoment = moment(this.barStartMoment).subtract(childPointCount, this.timeChildKey, true)
+          this.barEndMoment = moment(this.barEndMoment).subtract(childPointCount, this.timeChildKey, true)
           break
         case 'right':
-          this.barStartMoment = moment(this.barStartMoment).add(
-            childPointCount,
-            this.timeChildKey,
-            true
-          )
-          this.barEndMoment = moment(this.barEndMoment).add(
-            childPointCount,
-            this.timeChildKey,
-            true
-          )
+          this.barStartMoment = moment(this.barStartMoment).add(childPointCount, this.timeChildKey, true)
+          this.barEndMoment = moment(this.barEndMoment).add(childPointCount, this.timeChildKey, true)
           break
         default:
           // eslint-disable-next-line
@@ -648,11 +549,7 @@ export default {
     /* ------- MAPPING POSITION TO TIME (AND VICE VERSA) ------- */
     /* --------------------------------------------------------- */
     mapTimeToPosition(time) {
-      let timeDiffFromStart = moment(time).diff(
-        this.chartStartMoment,
-        this.timeUnit,
-        true
-      )
+      let timeDiffFromStart = moment(time).diff(this.chartStartMoment, this.timeUnit, true)
       let pos = (timeDiffFromStart / this.timeCount) * this.barContainer.width
       return pos
     },

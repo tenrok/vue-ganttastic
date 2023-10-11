@@ -1,10 +1,15 @@
 # Vue-Ganttastic
 
-![screenshot](https://user-images.githubusercontent.com/4740535/143231164-88cd538f-f4ff-4fc6-8cb0-a25f4bab465c.png)
+[![Version](https://img.shields.io/npm/v/@tenrok/vue-ganttastic.svg)](https://www.npmjs.com/package/@tenrok/vue-ganttastic)
+[![License](https://img.shields.io/npm/l/@tenrok/vue-ganttastic.svg)](https://github.com/tenrok/vue-ganttastic/blob/main/LICENSE)
+[![Vue.js](https://img.shields.io/badge/vue-2.7.14-brightgreen.svg?logo=vue.js)](https://github.com/vuejs/vue)
+[![GitHub last commit](https://img.shields.io/github/last-commit/tenrok/vue-ganttastic.svg)](https://github.com/tenrok/vue-ganttastic)
+[![Downloads](https://img.shields.io/npm/dm/@tenrok/vue-ganttastic.svg)](https://npmcharts.com/compare/@tenrok/vue-ganttastic?minimal=true)
+[![Demo](https://img.shields.io/badge/demo-demo-blue.svg)](https://tenrok.github.io/vue-ganttastic/)
 
 A simple and easy-to-use Gantt chart component for Vue.js
 
-[Demo](http://vue-ganttastic.vercel.app/)
+![screenshot](https://user-images.githubusercontent.com/4740535/143231164-88cd538f-f4ff-4fc6-8cb0-a25f4bab465c.png)
 
 ## Installation
 
@@ -31,6 +36,7 @@ For more detailed information, such as how to style the bars or additional confi
 
 The following code showcases a simple usage example in a .vue SFC (Single File Component)
 
+<!-- prettier-ignore -->
 ```html
 <template>
   ...
@@ -58,54 +64,54 @@ The following code showcases a simple usage example in a .vue SFC (Single File C
 </template>
 
 <script>
-  import { GGanttChart, GGanttRow } from '@tenrok/vue-ganttastic'
+import { GGanttChart, GGanttRow } from '@tenrok/vue-ganttastic'
 
-  export default {
+export default {
 
-    ...
+  ...
 
-    components: {
-      GGanttChart,
-      GGanttRow
-    },
+  components: {
+    GGanttChart,
+    GGanttRow
+  },
 
-    data() {
-      return {
-        myChartStart: "2020-03-01 00:00",
-        myChartEnd: "2020-03-03 00:00",
-        rows: [
-          {
-            label: "My row #1",
-            labelStyle: {
-              justifyContent: "end"
-            },
-            bars: [
-              {
-                myStart: "2020-03-01 12:10",
-                myEnd: "2020-03-01 16:35"
-              }
-            ]
+  data() {
+    return {
+      myChartStart: "2020-03-01 00:00",
+      myChartEnd: "2020-03-03 00:00",
+      rows: [
+        {
+          label: "My row #1",
+          labelStyle: {
+            justifyContent: "end"
           },
-          {
-            label: "My row #2",
-            bars: [
-              {
-                myStart: "2020-03-02 01:00",
-                myEnd: "2020-03-02 12:00"
-              },
-              {
-                myStart: "2020-03-02 13:00",
-                myEnd: "2020-03-02 22:00"
-              }
-            ]
-          }
-        ]
-      }
+          bars: [
+            {
+              myStart: "2020-03-01 12:10",
+              myEnd: "2020-03-01 16:35"
+            }
+          ]
+        },
+        {
+          label: "My row #2",
+          bars: [
+            {
+              myStart: "2020-03-02 01:00",
+              myEnd: "2020-03-02 12:00"
+            },
+            {
+              myStart: "2020-03-02 13:00",
+              myEnd: "2020-03-02 22:00"
+            }
+          ]
+        }
+      ]
     }
-
-    ...
-
   }
+
+  ...
+
+}
 </script>
 
 <style lang="scss">

@@ -1,10 +1,5 @@
 <template>
-  <div
-    ref="g-row"
-    class="g-gantt-row"
-    :style="{ height: `${chartProps.rowHeight}px` }"
-    v-on="$listeners"
-  >
+  <div ref="g-row" class="g-gantt-row" :style="{ height: `${chartProps.rowHeight}px` }" v-on="$listeners">
     <div class="g-gantt-row__label" :style="rowLabelStyle">
       <span :title="label">
         <slot name="label">{{ label }}</slot>
@@ -151,10 +146,7 @@ export default {
       const timeDiffFromStart = (xPos / barContainer.width) * this.timeCount
       const time = moment(this.chartStart).add(timeDiffFromStart, this.timeUnit)
       const bar = this.localBars.find(bar =>
-        time.isBetween(
-          bar[this.chartProps.barStartKey],
-          bar[this.chartProps.barEndKey]
-        )
+        time.isBetween(bar[this.chartProps.barStartKey], bar[this.chartProps.barEndKey])
       )
       this.$emit('drop', { event: e, bar, time: time.format(this.timeFormat) })
     },
@@ -163,22 +155,16 @@ export default {
       if (!this.chartProps.allowAdd) return
       let barContainer = this.$refs.barContainer.getBoundingClientRect()
       let xPos = e.clientX - barContainer.left
-      let timeDiffFromStart = Math.floor(
-        (xPos / barContainer.width) * this.timeCount
-      )
+      let timeDiffFromStart = Math.floor((xPos / barContainer.width) * this.timeCount)
       let time = moment(this.chartStart).add(timeDiffFromStart, this.timeUnit)
       let bar = {}
       bar[this.chartProps.barStartKey] = time.format()
-      bar[this.chartProps.barEndKey] = time
-        .add(this.defaultBarLength, this.timeUnit)
-        .format()
+      bar[this.chartProps.barEndKey] = time.add(this.defaultBarLength, this.timeUnit).format()
 
       bar[this.barConfigKey] = { handles: true }
       this.localBars.push(bar)
       this.localBars.sort((first, second) =>
-        moment(first[this.chartProps.barStartKey]).diff(
-          second[this.chartProps.barStartKey]
-        )
+        moment(first[this.chartProps.barStartKey]).diff(second[this.chartProps.barStartKey])
       )
     },
 

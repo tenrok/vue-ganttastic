@@ -2,7 +2,7 @@
 /** @type {import('vls').VeturConfig} */
 module.exports = {
   settings: {
-    'vetur.ignoreProjectWarning': true,
+    'vetur.ignoreProjectWarning': true
   },
-  projects: ['./'],
+  projects: ['./']
 }

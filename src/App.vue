@@ -224,8 +224,7 @@ export default {
               tooltip: 'Bar tooltip',
               config: {
                 color: 'white',
-                background:
-                  'repeating-linear-gradient(45deg, #de7359, #de7359 10px, #ffc803 10px, #ffc803 20px)'
+                background: 'repeating-linear-gradient(45deg, #de7359, #de7359 10px, #ffc803 10px, #ffc803 20px)'
               }
             }
           ]
@@ -271,13 +270,7 @@ export default {
       rowLabelWidth: 300,
       hideTimeaxis: false,
       highlightOnHover: true,
-      highlightedDays: [
-        '2020-03-01',
-        '2020-03-08',
-        '2020-03-15',
-        '2020-03-22',
-        '2020-03-29'
-      ],
+      highlightedDays: ['2020-03-01', '2020-03-08', '2020-03-15', '2020-03-22', '2020-03-29'],
       width: '90vw',
       height: '250px',
       allowAdd: false,
@@ -339,8 +332,7 @@ export default {
             }
           ],
           style: {
-            background:
-              'linear-gradient(-45deg, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 52%)',
+            background: 'linear-gradient(-45deg, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 52%)',
             backgroundSize: '1em 1em'
           }
         },
